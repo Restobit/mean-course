@@ -1,15 +1,16 @@
+require('dotenv').config();
 const path = require("path");
 const express = require("express");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
 const postsRoutes = require("./routes/posts");
-
 const app = express();
+const mongodbUsername = process.env.MONGODB_USERNAME;
+const mongodbPassword = process.env.MONGODB_PASSWORD;
+const mongodbDatabase = process.env.MONGODB_DATABASE;
 
 mongoose
   .connect(
-    "mongodb+srv://max:QuBqs0T45GDKPlIG@cluster0-ntrwp.mongodb.net/node-angular?retryWrites=true"
+    `mongodb+srv://${mongodbUsername}:${mongodbPassword}@cluster0.wqk6z.mongodb.net/${mongodbDatabase}?retryWrites=true&w=majority`
   )
   .then(() => {
     console.log("Connected to database!");
@@ -18,8 +19,8 @@ mongoose
     console.log("Connection failed!");
   });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use("/images", express.static(path.join("backend/images")));
 
 app.use((req, res, next) => {

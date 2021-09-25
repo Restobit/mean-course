@@ -9,7 +9,7 @@ import { mimeType } from "./mime-type.validator";
 @Component({
   selector: "app-post-create",
   templateUrl: "./post-create.component.html",
-  styleUrls: ["./post-create.component.css"]
+  styleUrls: ["./post-create.component.scss"]
 })
 export class PostCreateComponent implements OnInit {
   enteredTitle = "";
@@ -75,22 +75,24 @@ export class PostCreateComponent implements OnInit {
   }
 
   onSavePost() {
+    console.log("[onSavePost]", "form-valid:",this.form.invalid, "mode:" ,this.mode);
     if (this.form.invalid) {
       return;
     }
     this.isLoading = true;
+    
     if (this.mode === "create") {
-      this.postsService.addPost(
-        this.form.value.title,
-        this.form.value.content,
-        this.form.value.image
+        this.postsService.addPost(
+          this.form.value.title,
+          this.form.value.content,
+          this.form.value.image
       );
     } else {
-      this.postsService.updatePost(
-        this.postId,
-        this.form.value.title,
-        this.form.value.content,
-        this.form.value.image
+        this.postsService.updatePost(
+          this.postId,
+          this.form.value.title,
+          this.form.value.content,
+          this.form.value.image
       );
     }
     this.form.reset();

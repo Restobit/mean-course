@@ -1,0 +1,9 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'app/header/header.component',
+'app/posts/post-create/post-create.component.scss',
+'app/posts/post-list/post-list.component.scss',
+'app/app.component.scss';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
