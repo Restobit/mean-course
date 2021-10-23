@@ -39,8 +39,8 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
-!backend/images/
 /backend/images/**
+!backend/images/.gitkeep
 
 # System Files
 .DS_Store
