@@ -71,9 +71,12 @@ router.put(
       content: req.body.content,
       imagePath: imagePath
     });
-    console.log(post);
-    Post.updateOne({ _id: req.params.id }, post).then(result => {
-      res.status(200).json({ message: "Update successful!" });
+    Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post).then(result => {
+      console.log("updateOne:",result);
+      if (result.modifiedCount > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      }
+      res.status(401).json({ message: "Not authorized!" });
     });
   }
 );
@@ -86,8 +89,7 @@ router.get("", (req, res, next) => {
   if (pageSize && currentPage) {
     postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
   }
-  postQuery
-    .then(documents => {
+  postQuery.then(documents => {
       fetchedPosts = documents;
       return Post.count();
     })
@@ -111,9 +113,13 @@ router.get("/:id", (req, res, next) => {
 });
 
 router.delete("/:id", checkAuth,(req, res, next) => {
-  Post.deleteOne({ _id: req.params.id }).then(result => {
-    console.log(result);
-    res.status(200).json({ message: "Post deleted!" });
+  Post.deleteOne({ _id: req.params.id, creator: req.userData.userId}).then(result => {
+    console.log("delete:",result);
+    if (result.deletedCount > 0) {
+      res.status(200).json({ message: "Post deleted!" });
+    }
+    res.status(401).json({ message: "Not authorized!" });
+
   });
 });
 
