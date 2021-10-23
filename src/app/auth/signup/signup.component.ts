@@ -16,7 +16,7 @@ export class SignupComponent {
     if (loginForm.invalid){
       return;
     }
-
+    this.isLoading = true;
     this.authService.createUser(loginForm.value.email, loginForm.value.password);
   }
 
