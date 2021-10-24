@@ -61,18 +61,21 @@ router.put(
   multer({ storage: storage }).single("image"),
   (req, res, next) => {
     let imagePath = req.body.imagePath;
+
     if (req.file) {
       const url = req.protocol + "://" + req.get("host");
       imagePath = url + "/images/" + req.file.filename;
     }
+
     const post = new Post({
       _id: req.body.id,
       title: req.body.title,
       content: req.body.content,
-      imagePath: imagePath
+      imagePath: imagePath,
+      creator: req.userData.userId
     });
+
     Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post).then(result => {
-      console.log("updateOne:",result);
       if (result.modifiedCount > 0) {
         res.status(200).json({ message: "Update successful!" });
       }
@@ -114,12 +117,13 @@ router.get("/:id", (req, res, next) => {
 
 router.delete("/:id", checkAuth,(req, res, next) => {
   Post.deleteOne({ _id: req.params.id, creator: req.userData.userId}).then(result => {
-    console.log("delete:",result);
     if (result.deletedCount > 0) {
       res.status(200).json({ message: "Post deleted!" });
     }
     res.status(401).json({ message: "Not authorized!" });
 
+  }).catch(err => {
+    console.log(err);
   });
 });
 
