@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { AuthData } from "./auth-data.model";
 import { Router } from "@angular/router";
-import { Subject, timer } from "rxjs";
+import { Subject } from "rxjs";
 
 @Injectable({providedIn: "root"})
 export class AuthService {
