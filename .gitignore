@@ -39,9 +39,12 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
-/backend/images/*
+/backend/images/**
+!backend/images/.gitkeep
 
 # System Files
 .DS_Store
 Thumbs.db
+
+# The file containing environment variables
 .env
