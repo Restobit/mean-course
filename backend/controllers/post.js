@@ -42,11 +42,17 @@ exports.updatePost = (req, res, next) => {
     creator: req.userData.userId
   });
 
-  Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post).then(result => {
-    if (result.modifiedCount > 0) {
-      res.status(200).json({ message: "Update successful!" });
+  console.log(post);
+
+  Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post)
+  .then(result => {
+    console.log(result);
+    if (result.modifiedCount > 0 || result.matchedCount > 0) {
+      let dynamicMessage = `${result.modifiedCount > 0 ? 'Update successful!' : result.matchedCount > 0 ? 'Nothing to update' : 'Unknown error'}`
+      res.status(200).json({ message: dynamicMessage });
+    } else {
+      res.status(401).json({ message: "Not authorized!" });
     }
-    res.status(401).json({ message: "Not authorized!" });
   })
   .catch(error => {
     res.status(500).json({

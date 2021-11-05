@@ -25,6 +25,7 @@ export class AuthService {
   getUserId(){
     return this.userId;
   }
+
   getAuthStatusListener(){
     return this.authStatusListener.asObservable();
   }
@@ -32,8 +33,9 @@ export class AuthService {
   createUser(email: string, password: string){
     const authData: AuthData = {email: email, password: password};
      this.http.post("http://localhost:3000/api/user/signup", authData)
-     .subscribe(() => {
-       this.router.navigate['/'];
+     .subscribe((response) => {
+       console.log(response);
+       this.router.navigate(['/']);
      }, error => {
        this.authStatusListener.next(false);
      });
